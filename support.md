@@ -3206,23 +3206,2080 @@ Stop-Service -Name Spooler
 
 ### Gestion des systèmes et des services Windows
 
-#### Gestion des Processus Windows 
+#### Gestion des Comptes Utilisateurs et Permissions 
 
-<div style="font-size:20px">
+<div style="font-size:26px">
 
-### **Résumé des Cmdlets**
+### **1. Création et Gestion des Comptes Utilisateurs Locaux**
 
-| Cmdlet              | Description                                    |
-|---------------------|-----------------------------------------------|
-| `Get-Process`       | Liste les processus en cours.                 |
-| `Start-Process`     | Démarre une nouvelle application ou commande. |
-| `Stop-Process`      | Termine un processus spécifique.              |
-| `Get-Service`       | Liste les services installés sur le système.  |
-| `Start-Service`     | Démarre un service arrêté.                    |
-| `Stop-Service`      | Arrête un service en cours d’exécution.       |
-| `Restart-Service`   | Redémarre un service.                         |
+Pour gérer les utilisateurs locaux, PowerShell utilise les cmdlets du module `Microsoft.PowerShell.LocalAccounts`. Ce module est disponible à partir de Windows 10 et Windows Server 2016.
+
+#### **a. Création d’un utilisateur local**
+
+##### **Cmdlet : `New-LocalUser`**
+- Permet de créer un utilisateur local.
+
+##### **Syntaxe :**
+```powershell
+New-LocalUser -Name <NomUtilisateur> -Password <MotDePasse> [-FullName <NomComplet>] [-Description <Description>]
+```                        
 
 </div>
 
 ---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:26px">
+
+### **1. Création et Gestion des Comptes Utilisateurs Locaux**
+
+#### **a. Création d’un utilisateur local**
+
+##### **Exemple :**
+
+```powershell
+$Password = ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force
+New-LocalUser -Name "UtilisateurTest" -Password $Password -FullName "Utilisateur de Test" -Description "Compte utilisateur de test"
+
+```
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:26px">
+
+### **1. Création et Gestion des Comptes Utilisateurs Locaux**
+
+#### **b. Modification d’un utilisateur local**
+
+##### **Cmdlet : `Set-LocalUser`**
+- Permet de modifier les propriétés d’un utilisateur local.
+
+##### **Syntaxe :**
+```powershell
+Set-LocalUser -Name <NomUtilisateur> [-Password <MotDePasse>] [-Description <Description>]
+```
+
+##### **Exemple :**
+```powershell
+Set-LocalUser -Name "UtilisateurTest" -Description "Compte modifié"
+```
+
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:26px">
+
+### **1. Création et Gestion des Comptes Utilisateurs Locaux**
+
+#### **c. Suppression d’un utilisateur local**
+
+##### **Cmdlet : `Remove-LocalUser`**
+- Permet de supprimer un utilisateur local.
+
+##### **Syntaxe :**
+```powershell
+Remove-LocalUser -Name <NomUtilisateur>
+```
+
+##### **Exemple :**
+```powershell
+Remove-LocalUser -Name "UtilisateurTest"
+```
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:26px">
+
+### **1. Création et Gestion des Comptes Utilisateurs Locaux**
+
+#### **d. Lister les utilisateurs locaux**
+
+##### **Cmdlet : `Get-LocalUser`**
+- Liste les utilisateurs locaux sur la machine.
+
+##### **Syntaxe :**
+```powershell
+Get-LocalUser
+```
+
+##### **Exemple :**
+```powershell
+Get-LocalUser | Format-Table Name, FullName, Enabled
+```
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:22px">
+
+### **2. Modification des Permissions avec PowerShell**
+
+Pour gérer les permissions sur des fichiers, des dossiers ou d’autres ressources, PowerShell utilise les cmdlets associées au module `NTFS` ou à l’API .NET via les classes ACL.
+
+#### **a. Récupérer les permissions d’un fichier ou dossier**
+
+##### **Cmdlet : `Get-Acl`**
+- Permet de récupérer les informations ACL d’un fichier ou d’un dossier.
+
+##### **Syntaxe :**
+```powershell
+Get-Acl -Path <Chemin>
+```
+
+##### **Exemple :**
+```powershell
+Get-Acl -Path "C:\DossierTest"
+```
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:26px">
+
+### **2. Modification des Permissions avec PowerShell**
+
+#### **b. Modifier les permissions**
+
+##### **Cmdlet : `Set-Acl`**
+- Applique une liste de contrôle d’accès (ACL) à un fichier ou dossier.
+
+##### **Syntaxe :**
+```powershell
+$Acl = Get-Acl -Path <Chemin>
+$Acl.SetAccessRule(<RègleAccès>)
+Set-Acl -Path <Chemin> -AclObject $Acl
+```
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:22px">
+
+### **2. Modification des Permissions avec PowerShell**
+
+#### **b. Modifier les permissions**
+
+##### **Exemple :**
+1. **Créer une règle d’accès :**
+   ```powershell
+   $Acl = Get-Acl -Path "C:\DossierTest"
+   $Règle = New-Object System.Security.AccessControl.FileSystemAccessRule("UtilisateurTest", "FullControl", "Allow")
+   $Acl.SetAccessRule($Règle)
+   Set-Acl -Path "C:\DossierTest" -AclObject $Acl
+   ```
+
+2. **Supprimer une règle d’accès :**
+   ```powershell
+   $Règle = New-Object System.Security.AccessControl.FileSystemAccessRule("UtilisateurTest", "FullControl", "Allow")
+   $Acl.RemoveAccessRule($Règle)
+   Set-Acl -Path "C:\DossierTest" -AclObject $Acl
+   ```
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:22px">
+
+### **3. Introduction à Active Directory**
+
+Active Directory (AD) est un service annuaire utilisé pour gérer les utilisateurs, groupes et ressources dans un environnement réseau. PowerShell offre des cmdlets via le module **Active Directory** (module AD).
+
+#### **a. Installation du module Active Directory**
+
+1. **Sur un contrôleur de domaine Windows Server :**
+   ```powershell
+   Install-WindowsFeature -Name RSAT-AD-PowerShell
+   ```
+2. **Sur un poste Windows 10/11 ou Windows Server :**
+   - Installer les outils d’administration distants (RSAT) via les fonctionnalités facultatives :
+     ```powershell
+     Add-WindowsCapability -Online -Name Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0
+     ```
+
+</div>
+
+---
+##### Gestion des systèmes et des services Windows
+
+###### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:20px">
+
+### **3. Introduction à Active Directory**
+
+#### **b. Cmdlets pour gérer les objets Active Directory**
+
+| Cmdlet                 | Description                                        |
+|------------------------|----------------------------------------------------|
+| `Get-ADUser`           | Récupère des informations sur un utilisateur.      |
+| `New-ADUser`           | Crée un nouvel utilisateur dans AD.                |
+| `Set-ADUser`           | Modifie les propriétés d’un utilisateur AD.        |
+| `Remove-ADUser`        | Supprime un utilisateur de l’Active Directory.     |
+| `Get-ADGroup`          | Récupère des informations sur un groupe.           |
+| `Add-ADGroupMember`    | Ajoute un utilisateur ou un objet à un groupe.     |
+| `Get-ADComputer`       | Récupère des informations sur un ordinateur AD.    |
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:29px">
+
+### **3. Introduction à Active Directory**
+
+#### **c. Exemples Pratiques**
+
+##### **1. Lister tous les utilisateurs d’un domaine :**
+```powershell
+Get-ADUser -Filter * | Select-Object Name, SamAccountName, Enabled
+```
+
+##### **2. Créer un nouvel utilisateur :**
+```powershell
+New-ADUser -Name "UtilisateurAD" -SamAccountName "UtilisateurAD" -UserPrincipalName "utilisateur@domaine.local" -Path "OU=Utilisateurs,DC=domaine,DC=local" -AccountPassword (ConvertTo-SecureString "P@ssw0rd!" -AsPlainText -Force) -Enabled $true
+```
+
+</div>
+
+---
+
+### Gestion des systèmes et des services Windows
+
+#### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:26px">
+
+### **3. Introduction à Active Directory**
+
+#### **c. Exemples Pratiques**
+
+##### **3. Ajouter un utilisateur à un groupe :**
+```powershell
+Add-ADGroupMember -Identity "Administrateurs" -Members "UtilisateurAD"
+```
+
+##### **4. Modifier les informations d’un utilisateur :**
+```powershell
+Set-ADUser -Identity "UtilisateurAD" -Title "Développeur" -Department "Informatique"
+```
+
+##### **5. Supprimer un utilisateur :**
+```powershell
+Remove-ADUser -Identity "UtilisateurAD"
+```
+
+</div>
+
+---
+
+#### Gestion des systèmes et des services Windows
+
+###### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:20px">
+
+### **Résumé**
+
+
+| Cmdlet            | Description                                    |
+|-------------------|------------------------------------------------|
+| `New-LocalUser`   | Crée un utilisateur local.                     |
+| `Set-LocalUser`   | Modifie un utilisateur local.                  |
+| `Remove-LocalUser`| Supprime un utilisateur local.                 |
+| `Get-LocalUser`   | Liste les utilisateurs locaux.                 |
+
+
+| Cmdlet            | Description                                    |
+|-------------------|------------------------------------------------|
+| `Get-Acl`         | Récupère les permissions d’un fichier/dossier. |
+| `Set-Acl`         | Modifie les permissions d’un fichier/dossier.  |
+
+</div>
+
+---
+
+#### Gestion des systèmes et des services Windows
+
+###### Gestion des Comptes Utilisateurs et Permissions 
+
+<div style="font-size:29px">
+
+### **Résumé**
+
+#### **Active Directory :**
+| Cmdlet            | Description                                    |
+|-------------------|------------------------------------------------|
+| `Get-ADUser`      | Liste ou récupère un utilisateur AD.           |
+| `New-ADUser`      | Crée un nouvel utilisateur dans AD.            |
+| `Set-ADUser`      | Modifie les propriétés d’un utilisateur AD.    |
+| `Add-ADGroupMember`| Ajoute un utilisateur à un groupe AD.         |
+
+</div>
+
+---
+
+<!-- _class: lead -->
+<!-- _paginate: false -->
+
+## Automatisation avancée
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:26px">
+
+### **1. Planification des Tâches avec PowerShell**
+
+PowerShell permet de créer, configurer et gérer des tâches planifiées à l’aide des cmdlets associées au module **ScheduledTasks**.
+
+#### **a. Création d’une tâche planifiée**
+
+##### **Cmdlet : `New-ScheduledTask` et `Register-ScheduledTask`**
+- `New-ScheduledTask` définit une tâche planifiée.
+- `Register-ScheduledTask` enregistre la tâche pour qu’elle s’exécute automatiquement.
+</div>
+
+---
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:26px">
+
+### **1. Planification des Tâches avec PowerShell**
+
+PowerShell permet de créer, configurer et gérer des tâches planifiées à l’aide des cmdlets associées au module **ScheduledTasks**.
+
+#### **a. Création d’une tâche planifiée**
+
+##### **Syntaxe :**
+```powershell
+$Trigger = New-ScheduledTaskTrigger -Daily -At "08:00AM"
+$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Scripts\MonScript.ps1"
+Register-ScheduledTask -TaskName "MaTache" -Trigger $Trigger -Action $Action -Description "Exemple de tâche planifiée"
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:27px">
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **a. Création d’une tâche planifiée**
+
+##### **Exemple complet :**
+```powershell
+# Définir le déclencheur (tâche quotidienne à 8h)
+$Trigger = New-ScheduledTaskTrigger -Daily -At "08:00AM"
+
+# Définir l’action (exécution d’un script PowerShell)
+$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Scripts\Backup.ps1"
+
+# Enregistrer la tâche planifiée
+Register-ScheduledTask -TaskName "BackupJournalier" -Trigger $Trigger -Action $Action -Description "Tâche de sauvegarde quotidienne"
+```
+
+</div>
+
+---
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:27px">
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **b. Modifier une tâche existante**
+
+##### **Cmdlet : `Set-ScheduledTask`**
+- Permet de modifier les propriétés d’une tâche existante.
+
+##### **Exemple :**
+```powershell
+Set-ScheduledTask -TaskName "BackupJournalier" -Trigger (New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At "06:00AM")
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:27px">
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **c. Lister les tâches planifiées**
+
+##### **Cmdlet : `Get-ScheduledTask`**
+- Liste toutes les tâches planifiées.
+
+##### **Exemple :**
+```powershell
+Get-ScheduledTask | Where-Object { $_.TaskName -like "*Backup*" }
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:27px">
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **d. Supprimer une tâche planifiée**
+
+##### **Cmdlet : `Unregister-ScheduledTask`**
+- Supprime une tâche planifiée.
+
+##### **Exemple :**
+```powershell
+Unregister-ScheduledTask -TaskName "BackupJournalier" -Confirm:$false
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:27px">
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+Les journaux d'événements Windows sont une source précieuse pour diagnostiquer des problèmes ou surveiller des systèmes.
+
+#### **a. Cmdlet : `Get-EventLog`**
+- Utilisée pour lire les journaux d'événements traditionnels (applications, sécurité, système).
+
+##### **Syntaxe :**
+```powershell
+Get-EventLog -LogName <NomJournal> [-Newest <Nombre>] [-EntryType <Type>]
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:20px">
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+#### **a. Cmdlet : `Get-EventLog`**
+
+##### **Exemple :**
+1. **Lister les 10 dernières entrées du journal système :**
+   ```powershell
+   Get-EventLog -LogName System -Newest 10
+   ```
+
+2. **Filtrer les erreurs dans le journal application :**
+   ```powershell
+   Get-EventLog -LogName Application -EntryType Error
+   ```
+
+3. **Exporter le journal système dans un fichier CSV :**
+   ```powershell
+   Get-EventLog -LogName System -Newest 50 | Export-Csv -Path C:\Logs\SystemEvents.csv -NoTypeInformation
+   ```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:23px">
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+#### **b. Cmdlet : `Get-WinEvent`**
+- Recommandée pour lire les journaux d'événements modernes (plus flexible que `Get-EventLog`).
+
+##### **Syntaxe :**
+```powershell
+Get-WinEvent -LogName <NomJournal> [-MaxEvents <Nombre>] [-FilterHashTable <Filtres>]
+```
+
+##### **Exemple :**
+1. **Lister les événements récents du journal Sécurité :**
+   ```powershell
+   Get-WinEvent -LogName Security -MaxEvents 10
+   ```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:23px">
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+#### **b. Cmdlet : `Get-WinEvent`**
+
+2. **Filtrer par ID d'événement :**
+   ```powershell
+   Get-WinEvent -LogName Application | Where-Object { $_.Id -eq 1000 }
+   ```
+
+3. **Filtrer par date :**
+   ```powershell
+   Get-WinEvent -LogName System -FilterHashtable @{StartTime="2024-12-01"; EndTime="2024-12-31"}
+   ```
+
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:20px">
+
+### **3. Génération de Rapports Automatisés**
+
+PowerShell permet de générer des rapports dans des formats comme CSV ou HTML pour une analyse visuelle.
+
+#### **a. Génération de rapports CSV**
+
+##### **Cmdlet : `Export-Csv`**
+- Convertit une sortie en fichier CSV.
+
+##### **Exemple :**
+1. **Exporter la liste des services en cours d’exécution :**
+   ```powershell
+   Get-Service | Where-Object { $_.Status -eq "Running" } | Export-Csv -Path C:\Rapports\ServicesRunning.csv -NoTypeInformation
+   ```
+2. **Exporter les 10 processus les plus gourmands en mémoire :**
+   ```powershell
+   Get-Process | Sort-Object -Property WorkingSet -Descending | Select-Object -First 10 | Export-Csv -Path C:\Rapports\TopMemoryProcesses.csv -NoTypeInformation
+   ```
+
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:23px">
+
+### **3. Génération de Rapports Automatisés**
+
+#### **b. Génération de rapports HTML**
+
+##### **Cmdlet : `ConvertTo-Html`**
+- Convertit une sortie en tableau HTML.
+
+##### **Exemple :**
+1. **Créer un rapport HTML des 5 derniers fichiers modifiés :**
+   ```powershell
+   Get-ChildItem -Path C:\Dossiers -Recurse | Sort-Object -Property LastWriteTime -Descending | Select-Object -First 5 | ConvertTo-Html -Property Name, LastWriteTime, Length -Title "Derniers Fichiers Modifiés" | Out-File -FilePath C:\Rapports\FichiersRecents.html
+   ```
+
+2. **Rapport des événements système :**
+   ```powershell
+   Get-EventLog -LogName System -Newest 20 | ConvertTo-Html -Property EntryType, Source, TimeGenerated, Message -Title "Rapport des Événements Système" | Out-File -FilePath C:\Rapports\SystemEvents.html
+   ```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+#### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:24px">
+
+### **3. Génération de Rapports Automatisés**
+
+#### **c. Génération automatique avec un script**
+
+##### **Exemple de script pour un rapport journalier :**
+```powershell
+# Chemin du rapport
+$RapportHTML = "C:\Rapports\RapportSysteme.html"
+
+# Récupérer les événements récents
+$Evenements = Get-EventLog -LogName System -Newest 50
+
+# Générer un rapport HTML
+$Evenements | ConvertTo-Html -Property EntryType, Source, TimeGenerated, Message -Title "Rapport Système Journalier" | Out-File -FilePath $RapportHTML
+
+Write-Output "Rapport généré : $RapportHTML"
+```
+
+</div>
+
+---
+
+#### Automatisation avancée
+
+##### Planification des Tâches, Analyse des Journaux et Génération de Rapports 
+
+<div style="font-size:24px">
+
+
+| Tâche                             | Cmdlet                      | Description                                           |
+|-----------------------------------|-----------------------------|-------------------------------------------------------|
+| **Planification des tâches**      | `New-ScheduledTask`, `Register-ScheduledTask`, `Set-ScheduledTask` | Création et modification des tâches planifiées.       |
+| **Journaux d'événements**         | `Get-EventLog`, `Get-WinEvent` | Lecture et filtrage des journaux d’événements.        |
+| **Génération de rapports (CSV)**  | `Export-Csv`                | Export des données structurées en fichier CSV.        |
+| **Génération de rapports (HTML)** | `ConvertTo-Html`            | Conversion des données en tableaux HTML.              |
+
+</div>
+
+---
+
+#### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:24px">
+
+
+
+### **1. Création de Scripts PowerShell : Structure et Bonnes Pratiques**
+
+#### **Structure d’un script PowerShell**
+1. **Introduction et informations** :
+   - Utiliser des commentaires pour expliquer le script.
+   - Ajouter des métadonnées sur le script.
+   ```powershell
+   # Nom : ScriptExemple.ps1
+   # Description : Automatisation des tâches système.
+   # Auteur : Votre Nom
+   # Date : 31-12-2024
+   ```
+
+2. **Importation des modules nécessaires** :
+   ```powershell
+   Import-Module ActiveDirectory
+   ```
+
+</div>
+
+---
+
+#### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:24px">
+
+### **1. Création de Scripts PowerShell : Structure et Bonnes Pratiques**
+
+3. **Déclaration des paramètres** :
+   - Utiliser la section `Param` pour des entrées dynamiques.
+   ```powershell
+   param(
+       [string]$NomUtilisateur,
+       [int]$NombreIterations
+   )
+   ```
+
+4. **Logique principale** :
+   - Ajouter des blocs logiques bien séparés pour les différentes tâches.
+
+5. **Gestion des erreurs** :
+   - Intégrer des blocs `Try-Catch-Finally` pour capturer les erreurs.
+
+6. **Retour et sortie** :
+   - Utiliser des messages clairs ou des fichiers de log.
+
+</div>
+
+---
+
+#### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:23px">
+
+### **1. Création de Scripts PowerShell : Structure et Bonnes Pratiques**
+
+#### **Bonnes pratiques**
+1. **Nommer les scripts de manière descriptive** :
+   - Exemple : `CréerUtilisateurAD.ps1`.
+
+2. **Utiliser des commentaires** :
+   ```powershell
+   # Cette section configure les permissions pour un dossier.
+   ```
+
+3. **Éviter le code en dur** :
+   - Utiliser des paramètres dynamiques ou des fichiers de configuration.
+
+4. **Tester les scripts en environnement contrôlé**.
+
+5. **Utiliser la sortie structurée (CSV, JSON)** pour les données générées.
+
+</div>
+
+---
+
+##### Automatisation avancée
+
+###### Création de Scripts PowerShell
+
+<div style="font-size:20px">
+
+### **1. Création de Scripts PowerShell : Structure et Bonnes Pratiques**
+
+### **Exemple de script simple : Gestion des utilisateurs locaux**
+```powershell
+# Script : AjouterUtilisateur.ps1
+# Description : Crée un utilisateur local avec des paramètres personnalisés.
+
+param(
+    [string]$NomUtilisateur,
+    [string]$MotDePasse
+)
+
+try {
+    # Convertir le mot de passe en chaîne sécurisée
+    $Password = ConvertTo-SecureString $MotDePasse -AsPlainText -Force
+
+    # Créer l'utilisateur
+    New-LocalUser -Name $NomUtilisateur -Password $Password -FullName "Utilisateur $NomUtilisateur" -Description "Compte créé via script"
+
+    Write-Output "Utilisateur $NomUtilisateur créé avec succès."
+} catch {
+    Write-Error "Erreur lors de la création de l'utilisateur : $_"
+}
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:17px">
+
+### **2. Introduction aux Fonctions PowerShell**
+
+#### **Déclaration d’une fonction**
+- Les fonctions encapsulent des blocs de code réutilisables.
+
+##### **Syntaxe :**
+```powershell
+function <NomFonction> {
+    param(
+        [Type]$Param1,
+        [Type]$Param2
+    )
+    <Instructions>
+    return <Valeur>
+}
+```
+#### **Exemples pratiques**
+
+##### **a. Fonction sans paramètre**
+```powershell
+function DireBonjour {
+    Write-Output "Bonjour, PowerShell !"
+}
+DireBonjour
+```
+</div>
+
+---
+
+### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:18px">
+
+### **2. Introduction aux Fonctions PowerShell**
+
+##### **b. Fonction avec paramètres**
+```powershell
+function Addition {
+    param(
+        [int]$Nombre1,
+        [int]$Nombre2
+    )
+    return $Nombre1 + $Nombre2
+}
+$Resultat = Addition -Nombre1 10 -Nombre2 5
+Write-Output "Résultat : $Resultat"
+```
+
+##### **c. Fonction avec valeur par défaut**
+```powershell
+function DireBonjour {
+    param(
+        [string]$Nom = "Utilisateur"
+    )
+    Write-Output "Bonjour, $Nom !"
+}
+DireBonjour
+DireBonjour -Nom "Alice"
+```
+</div>
+
+---
+
+### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:27px">
+
+### **2. Introduction aux Fonctions PowerShell**
+
+##### **d. Fonction réutilisable pour gérer des services**
+```powershell
+function RedemarrerService {
+    param(
+        [string]$NomService
+    )
+    try {
+        Restart-Service -Name $NomService -Force
+        Write-Output "Le service $NomService a été redémarré."
+    } catch {
+        Write-Error "Erreur lors du redémarrage du service $NomService : $_"
+    }
+}
+RedemarrerService -NomService "Spooler"
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:27px">
+
+### **3. Gestion des Erreurs avec `Try-Catch-Finally`**
+
+PowerShell permet de gérer les erreurs avec les blocs `Try-Catch-Finally`.
+
+#### **Structure de base**
+```powershell
+try {
+    # Bloc où une erreur peut survenir
+    <Instructions>
+} catch {
+    # Bloc exécuté en cas d'erreur
+    Write-Error "Une erreur est survenue : $_"
+} finally {
+    # Bloc exécuté dans tous les cas (optionnel)
+    Write-Output "Opération terminée."
+}
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:27px">
+
+### **3. Gestion des Erreurs avec `Try-Catch-Finally`**
+
+#### **Exemples pratiques**
+
+##### **a. Gestion d’une erreur simple**
+```powershell
+try {
+    # Suppression d’un fichier inexistant
+    Remove-Item -Path "C:\Inexistant.txt" -ErrorAction Stop
+} catch {
+    Write-Error "Erreur : $_"
+} finally {
+    Write-Output "Bloc Finally exécuté."
+}
+```
+
+</div>
+
+---
+
+### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:18px">
+
+### **3. Gestion des Erreurs avec `Try-Catch-Finally`**
+
+#### **Exemples pratiques**
+
+##### **b. Valider un chemin avant d’accéder à un fichier**
+```powershell
+function LireFichier {
+    param(
+        [string]$CheminFichier
+    )
+    try {
+        if (-Not (Test-Path $CheminFichier)) {
+            throw "Le fichier $CheminFichier n'existe pas."
+        }
+
+        $Contenu = Get-Content -Path $CheminFichier
+        Write-Output "Contenu du fichier :"
+        Write-Output $Contenu
+    } catch {
+        Write-Error "Erreur : $_"
+    }
+}
+
+LireFichier -CheminFichier "C:\Inexistant.txt"
+```
+
+
+</div>
+
+---
+
+### Automatisation avancée
+
+##### Création de Scripts PowerShell
+
+<div style="font-size:22px">
+
+### **3. Gestion des Erreurs avec `Try-Catch-Finally`**
+
+#### **Exemples pratiques**
+
+##### **c. Blocs imbriqués pour des scénarios complexes**
+```powershell
+try {
+    Write-Output "Début de l'opération."
+    # Exemple de tentative d'exécution
+    try {
+        $Resultat = 10 / 0  # Erreur intentionnelle
+    } catch {
+        throw "Erreur dans l'opération interne : $_"
+    }
+} catch {
+    Write-Error "Une erreur majeure est survenue : $_"
+} finally {
+    Write-Output "Nettoyage en cours..."
+}
+```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+#### Création de Scripts PowerShell
+
+<div style="font-size:29px">
+
+### **Résumé des Concepts**
+
+| Concept                  | Description                                    |
+|--------------------------|------------------------------------------------|
+| **Scripts**              | Code réutilisable, structuré en fichiers `.ps1`. |
+| **Fonctions**            | Blocs de code réutilisables, avec ou sans paramètres. |
+| **Try-Catch-Finally**    | Gestion robuste des erreurs dans PowerShell.   |
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:29px">
+
+
+### **1. Planification des Tâches avec PowerShell**
+
+PowerShell permet de créer, configurer et gérer des tâches planifiées à l’aide des cmdlets associées au module **ScheduledTasks**.
+
+#### **a. Création d’une tâche planifiée**
+
+##### **Cmdlet : `New-ScheduledTask` et `Register-ScheduledTask`**
+- `New-ScheduledTask` définit une tâche planifiée.
+- `Register-ScheduledTask` enregistre la tâche pour qu’elle s’exécute automatiquement.
+  
+</div>
+
+---
+
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:35px">
+
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **a. Création d’une tâche planifiée**
+
+##### **Syntaxe :**
+```powershell
+$Trigger = New-ScheduledTaskTrigger -Daily -At "08:00AM"
+$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Scripts\MonScript.ps1"
+Register-ScheduledTask -TaskName "MaTache" -Trigger $Trigger -Action $Action -Description "Exemple de tâche planifiée"
+```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:35px">
+
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **a. Création d’une tâche planifiée**
+
+##### **Exemple complet :**
+```powershell
+# Définir le déclencheur (tâche quotidienne à 8h)
+$Trigger = New-ScheduledTaskTrigger -Daily -At "08:00AM"
+
+# Définir l’action (exécution d’un script PowerShell)
+$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Scripts\Backup.ps1"
+
+# Enregistrer la tâche planifiée
+Register-ScheduledTask -TaskName "BackupJournalier" -Trigger $Trigger -Action $Action -Description "Tâche de sauvegarde quotidienne"
+```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:35px">
+
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **b. Modifier une tâche existante**
+
+##### **Cmdlet : `Set-ScheduledTask`**
+- Permet de modifier les propriétés d’une tâche existante.
+
+##### **Exemple :**
+```powershell
+Set-ScheduledTask -TaskName "BackupJournalier" -Trigger (New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At "06:00AM")
+```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:35px">
+
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **c. Lister les tâches planifiées**
+
+##### **Cmdlet : `Get-ScheduledTask`**
+- Liste toutes les tâches planifiées.
+
+##### **Exemple :**
+```powershell
+Get-ScheduledTask | Where-Object { $_.TaskName -like "*Backup*" }
+```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:35px">
+
+
+### **1. Planification des Tâches avec PowerShell**
+
+#### **d. Supprimer une tâche planifiée**
+
+##### **Cmdlet : `Unregister-ScheduledTask`**
+- Supprime une tâche planifiée.
+
+##### **Exemple :**
+```powershell
+Unregister-ScheduledTask -TaskName "BackupJournalier" -Confirm:$false
+```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:21px">
+
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+Les journaux d'événements Windows sont une source précieuse pour diagnostiquer des problèmes ou surveiller des systèmes.
+
+#### **a. Cmdlet : `Get-EventLog`**
+- Utilisée pour lire les journaux d'événements traditionnels (applications, sécurité, système).
+
+##### **Syntaxe :**
+```powershell
+Get-EventLog -LogName <NomJournal> [-Newest <Nombre>] [-EntryType <Type>]
+```
+
+##### **Exemple :**
+1. **Lister les 10 dernières entrées du journal système :**
+   ```powershell
+   Get-EventLog -LogName System -Newest 10
+   ```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:21px">
+
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+Les journaux d'événements Windows sont une source précieuse pour diagnostiquer des problèmes ou surveiller des systèmes.
+
+#### **a. Cmdlet : `Get-EventLog`**
+
+##### **Exemple :**
+2. **Filtrer les erreurs dans le journal application :**
+   ```powershell
+   Get-EventLog -LogName Application -EntryType Error
+   ```
+
+3. **Exporter le journal système dans un fichier CSV :**
+   ```powershell
+   Get-EventLog -LogName System -Newest 50 | Export-Csv -Path C:\Logs\SystemEvents.csv -NoTypeInformation
+   ```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:20px">
+
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+#### **b. Cmdlet : `Get-WinEvent`**
+- Recommandée pour lire les journaux d'événements modernes (plus flexible que `Get-EventLog`).
+
+##### **Syntaxe :**
+```powershell
+Get-WinEvent -LogName <NomJournal> [-MaxEvents <Nombre>] [-FilterHashTable <Filtres>]
+```
+
+##### **Exemple :**
+1. **Lister les événements récents du journal Sécurité :**
+   ```powershell
+   Get-WinEvent -LogName Security -MaxEvents 10
+   ```
+2. **Filtrer par ID d'événement :**
+   ```powershell
+   Get-WinEvent -LogName Application | Where-Object { $_.Id -eq 1000 }
+   ```
+
+
+</div>
+
+---
+
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:25px">
+
+### **2. Lecture et Analyse des Journaux d'Événements Windows**
+
+#### **b. Cmdlet : `Get-WinEvent`**
+
+##### **Exemple :**
+3. **Filtrer par date :**
+   ```powershell
+   Get-WinEvent -LogName System -FilterHashtable @{StartTime="2024-12-01"; EndTime="2024-12-31"}
+   ```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:21px">
+
+### **3. Génération de Rapports Automatisés**
+
+PowerShell permet de générer des rapports dans des formats comme CSV ou HTML pour une analyse visuelle.
+
+#### **a. Génération de rapports CSV**
+
+##### **Cmdlet : `Export-Csv`**
+- Convertit une sortie en fichier CSV.
+
+##### **Exemple :**
+1. **Exporter la liste des services en cours d’exécution :**
+   ```powershell
+   Get-Service | Where-Object { $_.Status -eq "Running" } | Export-Csv -Path C:\Rapports\ServicesRunning.csv -NoTypeInformation
+   ```
+2. **Exporter les 10 processus les plus gourmands en mémoire :**
+   ```powershell
+   Get-Process | Sort-Object -Property WorkingSet -Descending | Select-Object -First 10 | Export-Csv -Path C:\Rapports\TopMemoryProcesses.csv -NoTypeInformation
+   ```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:21px">
+
+### **3. Génération de Rapports Automatisés**
+
+PowerShell permet de générer des rapports dans des formats comme CSV ou HTML pour une analyse visuelle.
+
+#### **b. Génération de rapports HTML**
+
+##### **Cmdlet : `ConvertTo-Html`**
+- Convertit une sortie en tableau HTML.
+
+##### **Exemple :**
+1. **Créer un rapport HTML des 5 derniers fichiers modifiés :**
+   ```powershell
+   Get-ChildItem -Path C:\Dossiers -Recurse | Sort-Object -Property LastWriteTime -Descending | Select-Object -First 5 | ConvertTo-Html -Property Name, LastWriteTime, Length -Title "Derniers Fichiers Modifiés" | Out-File -FilePath C:\Rapports\FichiersRecents.html
+   ```
+
+2. **Rapport des événements système :**
+   ```powershell
+   Get-EventLog -LogName System -Newest 20 | ConvertTo-Html -Property EntryType, Source, TimeGenerated, Message -Title "Rapport des Événements Système" | Out-File -FilePath C:\Rapports\SystemEvents.html
+   ```
+
+
+</div>
+
+---
+
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:24px">
+
+### **3. Génération de Rapports Automatisés**
+
+PowerShell permet de générer des rapports dans des formats comme CSV ou HTML pour une analyse visuelle.
+
+#### **c. Génération automatique avec un script**
+
+##### **Exemple de script pour un rapport journalier :**
+```powershell
+# Chemin du rapport
+$RapportHTML = "C:\Rapports\RapportSysteme.html"
+
+# Récupérer les événements récents
+$Evenements = Get-EventLog -LogName System -Newest 50
+
+# Générer un rapport HTML
+$Evenements | ConvertTo-Html -Property EntryType, Source, TimeGenerated, Message -Title "Rapport Système Journalier" | Out-File -FilePath $RapportHTML
+
+Write-Output "Rapport généré : $RapportHTML"
+```
+
+</div>
+
+---
+
+## Automatisation avancée
+
+### Tâches planifiées et journaux
+
+<div style="font-size:24px">
+
+
+| Tâche                             | Cmdlet                      | Description                                           |
+|-----------------------------------|-----------------------------|-------------------------------------------------------|
+| **Planification des tâches**      | `New-ScheduledTask`, `Register-ScheduledTask`, `Set-ScheduledTask` | Création et modification des tâches planifiées.       |
+| **Journaux d'événements**         | `Get-EventLog`, `Get-WinEvent` | Lecture et filtrage des journaux d’événements.        |
+| **Génération de rapports (CSV)**  | `Export-Csv`                | Export des données structurées en fichier CSV.        |
+| **Génération de rapports (HTML)** | `ConvertTo-Html`            | Conversion des données en tableaux HTML.              |
+
+</div>
+
+---
+
+<!-- _class: lead -->
+<!-- _paginate: false -->
+
+## Réseaux et sécurité
+
+---
+
+## Réseaux et sécurité
+
+### Gestion Réseau avec PowerShell
+
+<div style="font-size:35px">
+
+<br>
+
+- PowerShell offre un ensemble riche de cmdlets pour gérer, surveiller et diagnostiquer des réseaux. 
+- Ces outils permettent de tester la connectivité, analyser les ports, gérer les adresses IP et configurer les interfaces réseau.
+
+</div>
+
+---
+
+### Réseaux et sécurité
+
+#### Gestion Réseau avec PowerShell
+
+<div style="font-size:17px">
+
+### **1. Cmdlets Réseau de Base**
+
+#### **a. Tester la connectivité : `Test-Connection`**
+- Permet de vérifier la connectivité réseau (similaire à `ping` en ligne de commande).
+  
+##### **Syntaxe :**
+```powershell
+Test-Connection -ComputerName <NomOuIP> [-Count <NombreDePaquets>]
+```
+
+##### **Exemples :**
+1. **Tester la connectivité vers une machine :**
+   ```powershell
+   Test-Connection -ComputerName google.com
+   ```
+
+2. **Envoyer 5 paquets :**
+   ```powershell
+   Test-Connection -ComputerName google.com -Count 5
+   ```
+
+3. **Tester plusieurs machines :**
+   ```powershell
+   "google.com", "192.168.1.1" | ForEach-Object { Test-Connection -ComputerName $_ -Count 1 }
+   ```
+
+</div>
+
+---
+
+### Réseaux et sécurité
+
+#### Gestion Réseau avec PowerShell
+
+<div style="font-size:17px">
+
+### **1. Cmdlets Réseau de Base**
+
+#### **b. Obtenir des informations IP : `Get-NetIPAddress`**
+- Fournit des informations sur les adresses IP configurées sur la machine.
+
+##### **Syntaxe :**
+```powershell
+Get-NetIPAddress [-InterfaceAlias <NomInterface>] [-AddressFamily <IPv4|IPv6>]
+```
+
+##### **Exemples :**
+1. **Lister toutes les adresses IP :**
+   ```powershell
+   Get-NetIPAddress
+   ```
+
+2. **Afficher uniquement les adresses IPv4 :**
+   ```powershell
+   Get-NetIPAddress -AddressFamily IPv4
+   ```
+
+3. **Obtenir les adresses IP pour une interface spécifique :**
+   ```powershell
+   Get-NetIPAddress -InterfaceAlias "Ethernet"
+   ```
+
+</div>
+
+---
+
+### Réseaux et sécurité
+
+#### Gestion Réseau avec PowerShell
+
+<div style="font-size:21px">
+
+### **1. Cmdlets Réseau de Base**
+
+#### **c. Résolution DNS : `Resolve-DnsName`**
+- Effectue une résolution DNS pour un nom de domaine.
+
+##### **Syntaxe :**
+```powershell
+Resolve-DnsName -Name <NomDomaine>
+```
+
+##### **Exemples :**
+1. **Résoudre un nom de domaine :**
+   ```powershell
+   Resolve-DnsName -Name google.com
+   ```
+
+2. **Résolution DNS avec type d’enregistrement spécifique :**
+   ```powershell
+   Resolve-DnsName -Name google.com -Type A
+   ```
+
+</div>
+
+---
+
+### Réseaux et sécurité
+
+#### Gestion Réseau avec PowerShell
+
+<div style="font-size:21px">
+
+### **2. Analyse des Ports et des Connexions Réseau**
+
+#### **a. Analyse des ports : `Test-NetConnection`**
+- Vérifie l’état des ports TCP sur une machine cible.
+
+##### **Syntaxe :**
+```powershell
+Test-NetConnection -ComputerName <NomOuIP> -Port <Port>
+```
+
+##### **Exemples :**
+1. **Vérifier la connectivité TCP vers un serveur web :**
+   ```powershell
+   Test-NetConnection -ComputerName google.com -Port 80
+   ```
+
+2. **Tester une connexion RDP (port 3389) :**
+   ```powershell
+   Test-NetConnection -ComputerName 192.168.1.10 -Port 3389
+   ```
+
+</div>
+
+---
+
+### Réseaux et sécurité
+
+#### Gestion Réseau avec PowerShell
+
+<div style="font-size:18px">
+
+### **2. Analyse des Ports et des Connexions Réseau**
+
+#### **b. Afficher les connexions réseau actives : `Get-NetTCPConnection`**
+- Fournit des informations sur les connexions TCP actives.
+
+##### **Syntaxe :**
+```powershell
+Get-NetTCPConnection [-State <État>] [-LocalPort <Port>]
+```
+
+##### **Exemples :**
+1. **Lister toutes les connexions actives :**
+   ```powershell
+   Get-NetTCPConnection
+   ```
+
+2. **Filtrer les connexions par état :**
+   ```powershell
+   Get-NetTCPConnection -State Established
+   ```
+
+3. **Afficher les connexions pour un port local spécifique :**
+   ```powershell
+   Get-NetTCPConnection -LocalPort 80
+   ```
+
+</div>
+
+---
+
+### Réseaux et sécurité
+
+#### Gestion Réseau avec PowerShell
+
+<div style="font-size:20px">
+
+### **3. Gestion des Interfaces Réseau**
+
+#### **a. Lister les interfaces réseau : `Get-NetAdapter`**
+- Affiche les informations sur les interfaces réseau disponibles.
+
+##### **Syntaxe :**
+```powershell
+Get-NetAdapter [-Name <NomInterface>]
+```
+
+##### **Exemples :**
+1. **Lister toutes les interfaces :**
+   ```powershell
+   Get-NetAdapter
+   ```
+
+2. **Afficher une interface spécifique :**
+   ```powershell
+   Get-NetAdapter -Name "Ethernet"
+   ```
+
+
+</div>
+
+---
+
+### Réseaux et sécurité
+
+#### Gestion Réseau avec PowerShell
+
+<div style="font-size:20px">
+
+### **3. Gestion des Interfaces Réseau**
+
+#### **b. Activer/Désactiver une interface réseau : `Enable-NetAdapter` / `Disable-NetAdapter`**
+- Permet d’activer ou de désactiver une interface réseau.
+
+##### **Syntaxe :**
+```powershell
+Enable-NetAdapter -Name <NomInterface>
+Disable-NetAdapter -Name <NomInterface>
+```
+
+##### **Exemples :**
+1. **Désactiver une interface réseau :**
+   ```powershell
+   Disable-NetAdapter -Name "Wi-Fi"
+   ```
+
+2. **Activer une interface réseau :**
+   ```powershell
+   Enable-NetAdapter -Name "Wi-Fi"
+   ```
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Gestion Réseau avec PowerShell
+
+<div style="font-size:25px">
+
+### **3. Gestion des Interfaces Réseau**
+
+#### **c. Configurer une adresse IP : `New-NetIPAddress`**
+- Assigne une adresse IP statique à une interface réseau.
+
+##### **Syntaxe :**
+```powershell
+New-NetIPAddress -InterfaceAlias <NomInterface> -IPAddress <AdresseIP> -PrefixLength <LongueurPréfixe> -DefaultGateway <Passerelle>
+```
+
+##### **Exemple :**
+```powershell
+New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.100 -PrefixLength 24 -DefaultGateway 192.168.1.1
+```
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Gestion Réseau avec PowerShell
+
+<div style="font-size:27px">
+
+### **3. Gestion des Interfaces Réseau**
+
+#### **d. Réinitialiser une interface réseau : `Restart-NetAdapter`**
+- Redémarre une interface réseau.
+
+##### **Syntaxe :**
+```powershell
+Restart-NetAdapter -Name <NomInterface>
+```
+
+##### **Exemple :**
+```powershell
+Restart-NetAdapter -Name "Ethernet"
+```
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Gestion Réseau avec PowerShell
+
+<div style="font-size:23px">
+
+### **Exemple Complet : Script de Diagnostic Réseau**
+
+```powershell
+# Script : Diagnostic Réseau
+# Description : Teste la connectivité réseau, analyse les connexions et vérifie l’état des interfaces.
+
+# Étape 1 : Tester la connectivité vers une cible
+$Cible = "google.com"
+Write-Output "Test de connectivité vers $Cible..."
+Test-Connection -ComputerName $Cible -Count 4
+
+# Étape 2 : Vérifier l’état des interfaces réseau
+Write-Output "État des interfaces réseau :"
+Get-NetAdapter | Select-Object Name, Status, LinkSpeed
+
+# Étape 3 : Analyse des connexions réseau actives
+Write-Output "Connexions TCP établies :"
+Get-NetTCPConnection -State Established | Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort
+```
+
+
+</div>
+
+---
+
+#### Réseaux et sécurité
+
+
+<div style="font-size:23px">
+
+
+| Cmdlet                  | Description                                   |
+|-------------------------|-----------------------------------------------|
+| `Test-Connection`       | Vérifie la connectivité réseau (ping).       |
+| `Get-NetIPAddress`      | Liste les adresses IP configurées.           |
+| `Resolve-DnsName`       | Effectue une résolution DNS.                 |
+| `Test-NetConnection`    | Vérifie l’état des ports TCP.                |
+| `Get-NetTCPConnection`  | Affiche les connexions TCP actives.          |
+| `Get-NetAdapter`        | Liste les interfaces réseau.                 |
+| `Enable-NetAdapter`     | Active une interface réseau.                 |
+| `Disable-NetAdapter`    | Désactive une interface réseau.              |
+| `New-NetIPAddress`      | Configure une adresse IP statique.           |
+| `Restart-NetAdapter`    | Redémarre une interface réseau.              |
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:20px">
+
+### **1. Utilisation de PowerShell Remoting**
+
+PowerShell Remoting permet d'exécuter des commandes ou des scripts sur des machines distantes. Il utilise généralement le protocole **WS-Management** via WinRM.
+
+#### **a. Activer PowerShell Remoting**
+
+1. **Activer le Remoting sur la machine locale :**
+   ```powershell
+   Enable-PSRemoting -Force
+   ```
+2. **Configurer la confiance mutuelle pour les machines non-domainées (optionnel) :**
+   - Ajouter les machines distantes dans la liste des hôtes de confiance :
+     ```powershell
+     Set-Item WSMan:\localhost\Client\TrustedHosts -Value "NomMachineOuIP"
+     ```
+3. **Vérifier l’état de WinRM :**
+   ```powershell
+   Get-Service WinRM
+   ```
+
+
+</div>
+
+---
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:23px">
+
+### **1. Utilisation de PowerShell Remoting**
+
+
+#### **b. Exécuter des commandes à distance**
+
+1. **Exécuter une commande sur une machine distante :**
+   ```powershell
+   Invoke-Command -ComputerName "NomMachine" -ScriptBlock { Get-Service }
+   ```
+
+2. **Passer des informations d'identification :**
+   ```powershell
+   $Credentials = Get-Credential
+   Invoke-Command -ComputerName "NomMachine" -Credential $Credentials -ScriptBlock { Get-Process }
+   ```
+
+3. **Exécuter un script complet sur une machine distante :**
+   ```powershell
+   Invoke-Command -ComputerName "NomMachine" -FilePath "C:\Scripts\MonScript.ps1"
+   ```
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:23px">
+
+### **1. Utilisation de PowerShell Remoting**
+
+#### **c. Sessions distantes persistantes**
+
+1. **Créer une session distante :**
+   ```powershell
+   $Session = New-PSSession -ComputerName "NomMachine"
+   ```
+
+2. **Exécuter des commandes dans une session :**
+   ```powershell
+   Invoke-Command -Session $Session -ScriptBlock { Get-Date }
+   ```
+
+3. **Fermer la session :**
+   ```powershell
+   Remove-PSSession -Session $Session
+   ```
+
+</div>
+
+---
+
+#### Réseaux et sécurité
+
+##### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:16px">
+
+### **2. Sécurisation des Scripts PowerShell**
+
+#### **a. Exécution restreinte**
+
+PowerShell utilise des stratégies d’exécution pour sécuriser les scripts.
+
+1. **Vérifier la stratégie actuelle :**
+   ```powershell
+   Get-ExecutionPolicy
+   ```
+
+2. **Changer la stratégie :**
+   - **Restreindre totalement :**
+     ```powershell
+     Set-ExecutionPolicy Restricted
+     ```
+   - **Autoriser les scripts signés :**
+     ```powershell
+     Set-ExecutionPolicy AllSigned
+     ```
+   - **Autoriser tous les scripts :**
+     ```powershell
+     Set-ExecutionPolicy Unrestricted
+     ```
+3. **Exécuter un script temporairement avec bypass :**
+   ```powershell
+   PowerShell.exe -ExecutionPolicy Bypass -File "C:\Scripts\MonScript.ps1"
+   ```
+
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:22px">
+
+### **2. Sécurisation des Scripts PowerShell**
+
+#### **b. Signatures de script**
+
+1. **Créer ou obtenir un certificat de signature :**
+   - Créer un certificat auto-signé :
+     ```powershell
+     New-SelfSignedCertificate -CertStoreLocation Cert:\CurrentUser\My -Subject "CN=ScriptSigning"
+     ```
+
+2. **Signer un script :**
+   ```powershell
+   Set-AuthenticodeSignature -FilePath "C:\Scripts\MonScript.ps1" -Certificate (Get-Item Cert:\CurrentUser\My\<Thumbprint>)
+   ```
+
+3. **Vérifier la signature :**
+   ```powershell
+   Get-AuthenticodeSignature -FilePath "C:\Scripts\MonScript.ps1"
+   ```
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:23px">
+
+### **3. Gestion des Certificats et du Chiffrement**
+
+#### **a. Gestion des certificats**
+
+1. **Lister les certificats :**
+   ```powershell
+   Get-ChildItem Cert:\CurrentUser\My
+   ```
+
+2. **Exporter un certificat :**
+   ```powershell
+   Export-Certificate -Cert (Get-Item Cert:\CurrentUser\My\<Thumbprint>) -FilePath "C:\Certificats\MonCert.cer"
+   ```
+
+3. **Supprimer un certificat :**
+   ```powershell
+   Remove-Item Cert:\CurrentUser\My\<Thumbprint>
+   ```
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:26px">
+
+### **3. Gestion des Certificats et du Chiffrement**
+
+#### **b. Chiffrement et déchiffrement**
+
+1. **Chiffrer un texte avec une clé sécurisée :**
+   ```powershell
+   $Texte = "Message secret"
+   $Clé = New-Object byte[] 16
+   [Security.Cryptography.RNGCryptoServiceProvider]::Create().GetBytes($Clé)
+   $TexteChiffré = [System.Security.Cryptography.ProtectedData]::Protect([Text.Encoding]::UTF8.GetBytes($Texte), $Clé, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
+   ```
+
+2. **Déchiffrer le texte :**
+   ```powershell
+   $TexteDéchiffré = [Text.Encoding]::UTF8.GetString([System.Security.Cryptography.ProtectedData]::Unprotect($TexteChiffré, $Clé, [System.Security.Cryptography.DataProtectionScope]::CurrentUser))
+   ```
+
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:26px">
+
+### **4. Cas Pratique : Automatisation d'une Tâche Complète**
+
+#### **Contexte**
+Créer un script PowerShell pour :
+- Planifier une tâche de sauvegarde.
+- Chiffrer les fichiers sauvegardés.
+- Générer un rapport HTML des sauvegardes.
+
+</div>
+
+---
+
+##### Réseaux et sécurité
+
+<div style="font-size:26px">
+
+#### **Script Exemple : Sauvegarde et Rapport**
+
+```powershell
+# Script : AutomatisationSauvegarde.ps1
+
+# 1. Configuration des variables
+$Source = "C:\Dossiers"
+$Destination = "D:\Sauvegardes"
+$Rapport = "D:\Rapports\RapportSauvegarde.html"
+$Clé = New-Object byte[] 16
+[Security.Cryptography.RNGCryptoServiceProvider]::Create().GetBytes($Clé)
+# 2. Sauvegarde des fichiers
+Write-Output "Démarrage de la sauvegarde..."
+Copy-Item -Path $Source\* -Destination $Destination -Recurse
+# 3. Chiffrement des fichiers
+Write-Output "Chiffrement des fichiers sauvegardés..."
+foreach ($Fichier in Get-ChildItem -Path $Destination) {
+    $Contenu = [Text.Encoding]::UTF8.GetBytes((Get-Content -Path $Fichier.FullName -Raw))
+    $ContenuChiffré = [System.Security.Cryptography.ProtectedData]::Protect($Contenu, $Clé, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
+    [IO.File]::WriteAllBytes($Fichier.FullName, $ContenuChiffré)
+}
+# 4. Génération du rapport HTML
+Write-Output "Génération du rapport..."
+$RapportData = Get-ChildItem -Path $Destination | Select-Object Name, LastWriteTime, Length
+$RapportData | ConvertTo-Html -Title "Rapport de Sauvegarde" | Out-File -FilePath $Rapport
+Write-Output "Rapport généré : $Rapport"
+# 5. Planification de la tâche
+Write-Output "Planification de la tâche..."
+$Trigger = New-ScheduledTaskTrigger -Daily -At "02:00AM"
+$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Scripts\AutomatisationSauvegarde.ps1"
+Register-ScheduledTask -TaskName "SauvegardeQuotidienne" -Trigger $Trigger -Action $Action -Description "Sauvegarde quotidienne automatique"
+```
+
+
+</div>
+
+---
+
+## Réseaux et sécurité
+
+### Remoting, Sécurisation et Automatisation
+
+<div style="font-size:26px">
+
+### **Résumé**
+
+| Fonctionnalité                    | Cmdlet / Méthode                                      |
+|-----------------------------------|------------------------------------------------------|
+| **PowerShell Remoting**           | `Enable-PSRemoting`, `Invoke-Command`, `New-PSSession` |
+| **Sécurisation des scripts**      | `Set-ExecutionPolicy`, `Set-AuthenticodeSignature`   |
+| **Gestion des certificats**       | `Get-ChildItem Cert:\`, `Export-Certificate`         |
+| **Chiffrement et déchiffrement**  | `ProtectedData` avec .NET                           |
+| **Planification de tâches**       | `New-ScheduledTask`, `Register-ScheduledTask`        |
+</div>
 
