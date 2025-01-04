@@ -22,9 +22,7 @@ footer: "Utopios® Tous droits réservés"
 3. Gestion des systèmes et des services Windows
 4. Automatisation avancée
 5. Réseaux et sécurité
-6. Urbanisation du SI Hybride
-7. Elements du Cloud Broker
-8. Impact et grandes tendances
+
 
 </div>
 
@@ -127,21 +125,21 @@ PowerShell est conçu pour répondre aux besoins d’administration et d’autom
 
 #### **3. Cas d’usage de PowerShell**
 
-1. **Déploiement et configuration :**
+4. **Déploiement et configuration :**
    - Déploiement de logiciels via des scripts automatisés.
    - Configuration des serveurs avec **Desired State Configuration (DSC)**.
    - Automatisation des mises à jour et correctifs.
 
-2. **Gestion de la sécurité :**
+5. **Gestion de la sécurité :**
    - Audit des permissions sur les fichiers et dossiers.
    - Gestion des certificats numériques.
    - Création de scripts sécurisés et gestion des credentials.
 
-3. **Intégration et gestion de Cloud :**
+6. **Intégration et gestion de Cloud :**
    - Interaction avec Azure, AWS, ou Google Cloud à travers leurs modules spécifiques.
    - Gestion des machines virtuelles et ressources cloud.
 
-4. **Scripting multiplateforme :**
+7. **Scripting multiplateforme :**
    - Grâce à PowerShell Core et PowerShell 7.x, gestion des systèmes Windows, Linux et macOS avec le même outil.
 </div>
 
@@ -159,6 +157,64 @@ PowerShell est conçu pour répondre aux besoins d’administration et d’autom
 - **Extensibilité :** supporte des modules personnalisés et des API.
 - **Interopérabilité :** fonctionne sur plusieurs plateformes et peut interagir avec d'autres outils comme Ansible, Terraform, etc.
 - **Communauté active :** riche en modules préexistants sur des plateformes comme le **PowerShell Gallery**.
+
+</div>
+
+---
+
+#### Introduction et bases de PowerShell
+
+##### Introduction
+
+<div style="font-size:17px">
+
+#### **Composants PowerShell**
+
+| **Composant**         | **Description**                                                                 | **Exemple**                                                                                 |
+|------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| **Shell interactif**   | Interface pour exécuter des commandes et scripts.                              | `Write-Host "Hello, PowerShell!"`                                                          |
+| **Cmdlets**            | Commandes de base suivant le modèle `Verbe-Nom`.                               | `Get-Process`, `Set-Item`                                                                  |
+| **Pipelines**         | Chaînage de commandes, en passant les objets entre elles.  | `Get-Process |Sort-Object CPU -Descending`  CPU                                               |
+| **Objets**             | Sortie des cmdlets sous forme d'objets .NET avec propriétés et méthodes.       | `$process = Get-Process; $process[0].Name`                                                
+
+
+</div>
+
+---
+
+#### Introduction et bases de PowerShell
+
+##### Introduction
+
+<div style="font-size:17px">
+
+#### **Composants PowerShell**
+
+| **Composant**         | **Description**                                                                 | **Exemple**                                                                                 |
+|------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| **Fichiers de script** | Scripts PowerShell (.ps1) contenant des séquences de commandes.               | `Write-Host "Bonjour !"` (dans un fichier `Example.ps1`)                                   |
+| **Modules**            | Collections de cmdlets, fonctions et scripts pour des tâches spécifiques.     | `Import-Module Az`                                                                         |
+| **Providers**          | Accès uniforme aux magasins de données (fichiers, registre, etc.).            | `Get-ChildItem -Path HKLM:\Software`                                                      |
+| **Variables**          | Stockage de données ou d’objets avec `$NomVariable`.                          | `$name = "Alice"; Write-Host $name`                                                       |
+
+
+</div>
+
+---
+
+#### Introduction et bases de PowerShell
+
+
+<div style="font-size:17px">
+
+
+| **Composant**         | **Description**                                                                 | **Exemple**                                                                                 |
+|------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| **Fonctions**          | Groupes de commandes réutilisables, avec paramètres optionnels.               | `function Greet { param([string]$Name) Write-Host "Hello, $Name!" }`                       |
+| **Gestion des erreurs**| Gestion structurée des erreurs avec `try/catch/finally` ou `Get-Error`.       | `try { Get-Item "InvalidPath" } catch { Write-Host "Erreur : $($_.Exception.Message)" }`   |
+| **Remote PowerShell**  | Exécution de commandes sur des machines distantes via PowerShell Remoting.    | `Invoke-Command -ComputerName Server01 -ScriptBlock { Get-Service }`                      |
+| **Integrated Scripting Environment (ISE)** | Environnement graphique pour écrire et tester des scripts (remplacé par VS Code). | Utilisation d'outils modernes comme Visual Studio Code pour éditer et exécuter des scripts.|
+
 
 </div>
 
