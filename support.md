@@ -987,30 +987,6 @@ Get-Process |
 
 ---
 
-## Introduction et bases de PowerShell
-
-#### Introduction à la syntaxe PowerShell : Cmdlets, Pipelines et Objets
-
-<div style="font-size:24px">
-
-### **5. Bonnes pratiques**
-1. **Utilisez `Get-Help` pour comprendre les cmdlets :**
-   ```powershell
-   Get-Help <Cmdlet> -Examples
-   ```
-
-2. **Utilisez le pipeline pour simplifier le traitement des données :**
-   - Chaque étape traite un petit morceau du travail.
-
-3. **Utilisez `Get-Member` pour explorer les propriétés/méthodes des objets.**
-   ```powershell
-   Get-Service | Get-Member
-   ```
-
-</div>
-
----
-
 
 <!-- _class: lead -->
 <!-- _paginate: false -->
@@ -1029,6 +1005,28 @@ Get-Process |
 
 - PowerShell offre plusieurs cmdlets de base qui permettent de découvrir, d’apprendre et de maîtriser ses fonctionnalités. 
 - Ces cmdlets sont essentiels pour explorer l’environnement PowerShell et interagir avec celui-ci.
+  
+</div>
+
+---
+
+#### Les commandes de base
+
+
+<div style="font-size:30px">
+
+| **Type**                   | **Exemples de cmdlets**                   |
+|----------------------------|-------------------------------------------|
+| Gestion des fichiers       | `Get-Content`, `Remove-Item`, `New-Item` |
+| Gestion des processus      | `Get-Process`, `Start-Process`           |
+| Gestion des services       | `Get-Service`, `Start-Service`           |
+| Gestion des utilisateurs   | `Get-LocalUser`, `New-LocalUser`         |
+| Réseau                     | `Test-Connection`, `Get-NetIPAddress`    |
+| Administration système     | `Restart-Computer`, `Get-EventLog`       |
+| Gestion des données        | `Import-Csv`, `ConvertTo-Json`           |
+| Gestion des modules        | `Get-Module`, `Import-Module`            |
+| Développement              | `New-Item`, `Invoke-Command`             |
+| Sécurité                   | `Get-Acl`, `ConvertTo-SecureString`      |
   
 </div>
 
