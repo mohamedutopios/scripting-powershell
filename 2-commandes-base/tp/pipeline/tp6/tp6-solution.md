@@ -6,23 +6,23 @@
 
 #### **Exercice 1 : Analyse avancée des fichiers**
 ```powershell
-Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse -Filter *.log |
+Get-ChildItem -Path "test3\LogFiles_Backup" -Recurse -Filter *.log |
     Where-Object { $_.Length -gt 1MB } |
     Sort-Object -Property Length -Descending |
     Select-Object Name, @{Name="Taille (Ko)"; Expression={[math]::Round($_.Length / 1KB, 2)}}, FullName |
-    Export-Csv -Path "C:\TP_PowerShell\LargeLogs.csv" -NoTypeInformation
+    Export-Csv -Path "test3\LargeLogs.csv" -NoTypeInformation
 ```
 
 ---
 
 #### **Exercice 2 : Création et analyse d'un rapport de logs**
 ```powershell
-Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse -Filter *.log |
+Get-ChildItem -Path "test3\LogFiles_Backup" -Recurse -Filter *.log |
     Select-String -Pattern "Error" |
     Group-Object -Property Path |
     Select-Object Name, @{Name="Nombre d'erreurs"; Expression={$_.Group.Count}} |
     ConvertTo-Html -Property Name, @{Name="Dernière Modification"; Expression={(Get-Item $_.Name).LastWriteTime}}, @{Name="Taille (Ko)"; Expression={(Get-Item $_.Name).Length / 1KB}} |
-    Out-File -FilePath "C:\TP_PowerShell\ErrorLogsReport.html"
+    Out-File -FilePath "test3\ErrorLogsReport.html"
 ```
 
 ---
@@ -30,12 +30,13 @@ Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse -Filter *.log |
 #### **Exercice 3 : Organisation par groupe et suppression conditionnelle**
 ```powershell
 # Regrouper par extension et calculer la taille
-Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse |
+Get-ChildItem -Path "test3\LogFiles_Backup" -Recurse |
     Group-Object -Property Extension |
-    Select-Object Name, Count, @{Name="Taille Totale (Mo)"; Expression={[math]::Round($_.Group | Measure-Object -Property Length -Sum).Sum / 1MB, 2}}
+    Select-Object Name, Count, @{Name="Taille Totale (Mo)"; Expression={[math]::Round(($_.Group | Measure-Object -Property Length -Sum).Sum / 1MB, 2)}}
+
 
 # Supprimer les fichiers `.tmp` ou de moins de 500 Ko
-Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse |
+Get-ChildItem -Path "test3\LogFiles_Backup" -Recurse |
     Where-Object { $_.Extension -eq ".tmp" -or $_.Length -lt 500KB } |
     Remove-Item
 ```
@@ -44,11 +45,11 @@ Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse |
 
 #### **Exercice 4 : Analyse temporelle et transformation**
 ```powershell
-Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse |
+Get-ChildItem -Path "test3\LogFiles_Backup" -Recurse |
     Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-15) } |
     Sort-Object -Property LastWriteTime |
     Select-Object @{Name="Nom (Majuscules)"; Expression={$_.Name.ToUpper()}}, LastWriteTime |
-    Export-Csv -Path "C:\TP_PowerShell\RecentLogs.csv" -NoTypeInformation
+    Export-Csv -Path "test3\RecentLogs.csv" -NoTypeInformation
 ```
 
 ---
@@ -56,25 +57,25 @@ Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse |
 #### **Exercice 5 : Fusion et analyse de fichiers**
 ```powershell
 # Fusionner tous les fichiers `.log`
-Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse -Filter *.log |
+Get-ChildItem -Path "test3\LogFiles_Backup" -Recurse -Filter *.log |
     Get-Content |
-    Set-Content -Path "C:\TP_PowerShell\CombinedLogs.log"
+    Set-Content -Path "test3\CombinedLogs.log"
 
 # Rechercher toutes les lignes contenant "Warning"
-Select-String -Path "C:\TP_PowerShell\CombinedLogs.log" -Pattern "Warning" |
+Select-String -Path "test3\CombinedLogs.log" -Pattern "Warning" |
     Measure-Object |
-    Set-Content -Path "C:\TP_PowerShell\WarningsCount.txt"
+    Set-Content -Path "test3\WarningsCount.txt"
 ```
 
 ---
 
 #### **Exercice 6 : Création d'un tableau HTML dynamique**
 ```powershell
-Get-ChildItem -Path "C:\TP_PowerShell\LogFiles_Backup" -Recurse -Filter *.log |
+Get-ChildItem -Path "test3\LogFiles_Backup" -Recurse -Filter *.log |
     Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-30) } |
     Select-Object Name, @{Name="Taille (Ko)"; Expression={[math]::Round($_.Length / 1KB, 2)}}, FullName, LastWriteTime |
     ConvertTo-Html -Property Name, "Taille (Ko)", FullName, LastWriteTime |
-    Out-File -Path "C:\TP_PowerShell\LogSummary.html"
+    Out-File -Path "test3\LogSummary.html"
 ```
 
 ---

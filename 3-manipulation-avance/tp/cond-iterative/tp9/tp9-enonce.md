@@ -1,4 +1,4 @@
-### TP PowerShell : Structures Conditionnelles, Boucles et Filtres/Sélecteurs (Sans Scripts)
+### TP PowerShell : Structures Conditionnelles, Boucles et Filtres/Sélecteurs 
 
 ---
 

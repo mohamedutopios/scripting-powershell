@@ -28,6 +28,7 @@
    - Déplacez ces fichiers dans le dossier `C:\NavigationTP\Archives\2024`.
 
 4. **Compresser et supprimer des fichiers**
+   - Créer des fichiers dans `C:\NavigationTP\Reports`
    - Compressez tout le contenu du dossier `C:\NavigationTP\Reports` dans une archive nommée `ReportsBackup.zip`.
    - Supprimez ensuite tous les fichiers `.txt` du dossier `C:\NavigationTP\Reports`.
 
@@ -39,21 +40,16 @@
      - `Date de Dernière Modification`
    - Remplissez ce fichier avec les informations de tous les fichiers présents dans `C:\NavigationTP`.
 
-6. **Navigation conditionnelle**
-   - Si le fichier `README.txt` existe dans `C:\NavigationTP\Logs\System`, changez vers ce répertoire.
-   - Si le fichier n’existe pas, affichez un message indiquant que le fichier est introuvable.
-
-7. **Créer un alias pour une navigation rapide**
-   - Créez un alias `gotoReports` pour naviguer rapidement dans le dossier `C:\NavigationTP\Reports`.
-
-8. **Rechercher des fichiers récents**
+6. **Rechercher des fichiers récents**
    - Affichez tous les fichiers modifiés dans les 30 derniers jours dans `C:\NavigationTP`.
 
-9. **Comparer deux dossiers**
+7. **Comparer deux dossiers**
+   - Le dossier `Application` reçoit un fichier `app-log1.txt` contenant `"Application Log 1"`.
+   - Le dossier `System` reçoit un fichier `sys-log1.txt` contenant `"System Log 1"`.
    - Comparez le contenu des dossiers `C:\NavigationTP\Logs\Application` et `C:\NavigationTP\Logs\System` :
      - Listez les fichiers présents dans `Application` mais absents de `System`.
 
-10. **Créer une navigation automatisée**
+8. **Créer une navigation automatisée**
     - Écrivez un script PowerShell qui effectue les étapes suivantes :
       - Navigue dans le dossier `C:\NavigationTP\Reports\Daily`.
       - Crée un fichier `summary.txt` contenant la liste des fichiers du dossier.

@@ -1,4 +1,4 @@
-### TP PowerShell : Manipulation Avancée de Variables, Tableaux et Hash Tables (Sans Scripts)
+### TP PowerShell : Manipulation Avancée de Variables, Tableaux et Hash Tables
 
 ---
 
