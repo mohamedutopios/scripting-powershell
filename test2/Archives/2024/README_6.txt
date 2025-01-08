@@ -1,1 +1,1 @@
-Ce dossier est utilisÃ© pour : Monthly
+Ce dossier est utilisé pour : Daily Reports

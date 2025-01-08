@@ -1,1 +1,1 @@
-Ce dossier est utilisÃ© pour : Daily
+Ce dossier est utilisé pour : Security Logs
