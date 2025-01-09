@@ -1,27 +1,5 @@
 ### TP PowerShell : Structures Conditionnelles, Boucles et Filtres/Sélecteurs 
 
----
-
-### **Exercice 1 : Analyse avec des Conditions**
-
-1. Déclarez une variable `$Nombre` contenant un entier entre -10 et 10.
-2. Utilisez une structure **`if-elseif-else`** pour afficher :
-   - "Nombre négatif" si `$Nombre` est inférieur à 0.
-   - "Nombre nul" si `$Nombre` est égal à 0.
-   - "Nombre positif" si `$Nombre` est supérieur à 0.
-
----
-
-### **Exercice 2 : Gestion avec `switch`**
-
-1. Déclarez une variable `$Jour` contenant un jour de la semaine (par exemple, `"Lundi"`).
-2. Utilisez **`switch`** pour afficher :
-   - "Début de semaine" si `$Jour` est `"Lundi"`.
-   - "Weekend !" si `$Jour` est `"Samedi"` ou `"Dimanche"`.
-   - "Jour ordinaire" pour tout autre jour.
-
----
-
 ### **Exercice 3 : Boucles sur une Liste de Fichiers**
 
 1. Listez tous les fichiers dans le répertoire `C:\TP_PowerShell`.
@@ -29,7 +7,7 @@
 3. Ajoutez une boucle **`for`** pour afficher les noms des 3 premiers fichiers de la liste.
 4. Avec une boucle **`while`**, affichez les noms des fichiers jusqu'à rencontrer un fichier dont le nom commence par `"Log"`.
 
----
+
 
 ### **Exercice 4 : Filtres Dynamiques avec `Where-Object`**
 
@@ -38,7 +16,7 @@
 3. Filtrez les fichiers modifiés au cours des 7 derniers jours.
 4. Filtrez les fichiers dont le nom contient `"rapport"` (insensible à la casse).
 
----
+
 
 ### **Exercice 5 : Sélectionner et Trier des Objets**
 
@@ -47,7 +25,6 @@
 3. Sélectionnez les 5 derniers fichiers modifiés et affichez leurs **noms** et **dates**.
 4. Créez une liste contenant uniquement les **chemins complets** des 3 fichiers les plus volumineux.
 
----
 
 ### **Exercice 6 : Analyse Dynamique avec Boucles et Sélecteurs**
 

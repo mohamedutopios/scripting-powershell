@@ -1,152 +1,210 @@
-### **TP PowerShell : Création de Scripts**
+
+
+### **1. Gestion des Utilisateurs Locaux**
+
+#### **Solution :**
+```powershell
+function AjouterUtilisateur {
+    param (
+        [string]$NomUtilisateur,
+        [string]$MotDePasse
+    )
+    try {
+        New-LocalUser -Name $NomUtilisateur -Password (ConvertTo-SecureString $MotDePasse -AsPlainText -Force) -FullName $NomUtilisateur
+        Write-Output "Utilisateur $NomUtilisateur créé avec succès."
+    } catch {
+        Write-Output "Erreur : Impossible de créer l'utilisateur $NomUtilisateur. $_"
+    }
+}
+
+function SupprimerUtilisateur {
+    param (
+        [string]$NomUtilisateur
+    )
+    try {
+        Remove-LocalUser -Name $NomUtilisateur
+        Write-Output "Utilisateur $NomUtilisateur supprimé avec succès."
+    } catch {
+        Write-Output "Erreur : Impossible de supprimer l'utilisateur $NomUtilisateur. $_"
+    }
+}
+
+function ListerUtilisateurs {
+    try {
+        Get-LocalUser
+    } catch {
+        Write-Output "Erreur : Impossible de lister les utilisateurs. $_"
+    }
+}
+
+# Exemple d'utilisation
+AjouterUtilisateur -NomUtilisateur "TestUser" -MotDePasse "P@ssw0rd!"
+ListerUtilisateurs
+SupprimerUtilisateur -NomUtilisateur "TestUser"
+```
 
 ---
 
-### **1. TP : Gestion des Utilisateurs Locaux**
+### **2. Gestion des Services Windows**
 
-#### **Énoncé :**
-Créez un script PowerShell qui automatise la gestion des utilisateurs locaux. Le script doit permettre de :
+#### **Solution :**
+```powershell
+function GererService {
+    param (
+        [string]$NomService
+    )
+    try {
+        $etat = Get-Service -Name $NomService
+        if ($etat.Status -ne "Running") {
+            Write-Output "Le service $NomService est arrêté. Redémarrage en cours..."
+            Start-Service -Name $NomService
+            Write-Output "Le service $NomService a été redémarré avec succès."
+        } else {
+            Write-Output "Le service $NomService est déjà en cours d'exécution."
+        }
+    } catch {
+        Write-Output "Erreur : Impossible de gérer le service $NomService. $_"
+    }
+}
 
-1. Ajouter un utilisateur local avec un nom et un mot de passe.
-2. Supprimer un utilisateur local.
-3. Lister tous les utilisateurs locaux existants.
-
-#### **Contraintes :**
-- Utilisez une fonction pour chaque opération (`AjouterUtilisateur`, `SupprimerUtilisateur`, `ListerUtilisateurs`).
-- Gérez les erreurs si l’utilisateur existe déjà ou n’existe pas.
-
----
-
-### **2. TP : Gestion des Services Windows**
-
-#### **Énoncé :**
-Créez un script PowerShell qui permet de gérer les services Windows. Le script doit :
-
-1. Vérifier l’état d’un service donné (ex. : `Spooler`).
-2. Redémarrer un service s’il est arrêté.
-3. Exporter les résultats dans un fichier texte.
-
-#### **Contraintes :**
-- Utilisez des paramètres dynamiques pour fournir le nom du service.
-- Ajoutez une gestion des erreurs en cas d’échec du redémarrage.
+# Exemple d'utilisation
+GererService -NomService "Spooler"
+```
 
 ---
 
-### **3. TP : Gestion de Fichiers et Rapports**
+### **3. Gestion de Fichiers et Rapports**
 
-#### **Énoncé :**
-Créez un script PowerShell qui analyse un dossier donné et génère un rapport contenant :
+#### **Solution :**
+```powershell
+function AnalyserDossier {
+    param (
+        [string]$CheminDossier
+    )
+    try {
+        if (-Not (Test-Path $CheminDossier)) {
+            throw "Le dossier $CheminDossier n'existe pas."
+        }
 
-1. La liste des fichiers avec leur taille.
-2. Les 5 plus gros fichiers.
-3. La somme totale des tailles des fichiers.
+        $fichiers = Get-ChildItem -Path $CheminDossier -File | Select-Object Name, Length
+        $rapport = $fichiers | Sort-Object Length -Descending | Select-Object -First 5
 
-#### **Contraintes :**
-- Le rapport doit être exporté au format CSV.
-- Gérez une erreur si le dossier n’existe pas.
+        $tailleTotale = ($fichiers | Measure-Object Length -Sum).Sum
+        $rapport | Export-Csv -Path "$CheminDossier\rapport.csv" -NoTypeInformation
 
----
+        Write-Output "Rapport généré dans $CheminDossier\rapport.csv"
+        Write-Output "Taille totale des fichiers : $tailleTotale bytes"
+    } catch {
+        Write-Output "Erreur : $_"
+    }
+}
 
-### **4. TP : Lecture et Validation de Fichiers**
-
-#### **Énoncé :**
-Créez un script PowerShell qui valide un fichier texte contenant une liste de noms (un par ligne). Le script doit :
-
-1. Vérifier si le fichier existe.
-2. Lister les noms qui commencent par une lettre spécifique (par exemple, `A`).
-3. Générer un nouveau fichier contenant uniquement les noms valides.
-
-#### **Contraintes :**
-- Utilisez un paramètre pour spécifier la lettre de filtre.
-- Gérez une erreur si le fichier est vide.
-
----
-
-### **5. TP : Automatisation avec Try-Catch-Finally**
-
-#### **Énoncé :**
-Créez un script PowerShell qui :
-
-1. Copie un fichier d’un dossier source vers un dossier de destination.
-2. Renomme le fichier après la copie.
-3. Supprime le fichier d’origine après vérification.
-
-#### **Contraintes :**
-- Gérez les erreurs si le fichier source n’existe pas ou si la copie échoue.
-- Ajoutez un bloc `Finally` pour afficher un message de nettoyage final.
+# Exemple d'utilisation
+AnalyserDossier -CheminDossier "C:\Temp"
+```
 
 ---
 
-### **6. TP : Fonction Réutilisable pour les Logs**
+### **4. Lecture et Validation de Fichiers**
 
-#### **Énoncé :**
-Créez une fonction PowerShell qui permet de gérer les logs d’une application. La fonction doit :
+#### **Solution :**
+```powershell
+function ValiderFichier {
+    param (
+        [string]$CheminFichier,
+        [string]$Lettre
+    )
+    try {
+        if (-Not (Test-Path $CheminFichier)) {
+            throw "Le fichier $CheminFichier n'existe pas."
+        }
 
-1. Ajouter un message de log (avec horodatage) dans un fichier de log.
-2. Lire le contenu complet des logs.
-3. Supprimer les logs plus anciens qu’une semaine.
+        $contenu = Get-Content $CheminFichier
+        if (-Not $contenu) {
+            throw "Le fichier est vide."
+        }
 
-#### **Contraintes :**
-- Le fichier de log doit être spécifié en paramètre.
-- Gérez les erreurs si le fichier n’existe pas.
+        $nomsValides = $contenu | Where-Object { $_ -like "$Lettre*" }
+        $nomsValides | Set-Content -Path "$CheminFichier-validé.txt"
 
----
+        Write-Output "Fichier validé créé : $CheminFichier-validé.txt"
+    } catch {
+        Write-Output "Erreur : $_"
+    }
+}
 
-### **7. TP : Analyse des Performances**
-
-#### **Énoncé :**
-Créez un script PowerShell qui analyse les performances du système. Le script doit :
-
-1. Lister les processus consommant plus de 10 % de CPU.
-2. Sauvegarder les informations des processus dans un fichier JSON.
-3. Terminer un processus donné par son nom (ex. : `notepad`).
-
-#### **Contraintes :**
-- Utilisez `Try-Catch` pour capturer les erreurs lors de la terminaison d’un processus.
-- Ajoutez un paramètre pour spécifier le seuil de CPU.
-
----
-
-### **8. TP : Création Dynamique d’Utilisateurs**
-
-#### **Énoncé :**
-Créez un script PowerShell qui crée 10 utilisateurs locaux automatiquement avec :
-
-1. Un nom généré dynamiquement (ex. : `User1`, `User2`, ...).
-2. Un mot de passe aléatoire pour chaque utilisateur.
-3. Un fichier CSV contenant les informations des utilisateurs créés (nom et mot de passe).
-
-#### **Contraintes :**
-- Gérez les doublons si un utilisateur existe déjà.
-- Vérifiez les permissions nécessaires pour exécuter le script.
+# Exemple d'utilisation
+ValiderFichier -CheminFichier "C:\Temp\noms.txt" -Lettre "A"
+```
 
 ---
 
-### **9. TP : Surveillance de Répertoire**
+### **5. Automatisation avec Try-Catch-Finally**
 
-#### **Énoncé :**
-Créez un script PowerShell qui surveille un dossier donné et :
+#### **Solution :**
+```powershell
+function CopierRenommerSupprimer {
+    param (
+        [string]$Source,
+        [string]$Destination,
+        [string]$NouveauNom
+    )
+    try {
+        if (-Not (Test-Path $Source)) {
+            throw "Le fichier source $Source n'existe pas."
+        }
 
-1. Détecte tout ajout ou modification de fichier.
-2. Enregistre les changements dans un fichier journal (nom, date et type de modification).
-3. Supprime automatiquement les fichiers de plus de 30 jours.
+        Copy-Item -Path $Source -Destination $Destination
+        Rename-Item -Path (Join-Path $Destination (Split-Path $Source -Leaf)) -NewName $NouveauNom
+        Remove-Item -Path $Source
 
-#### **Contraintes :**
-- Utilisez la cmdlet `Register-ObjectEvent` pour surveiller les modifications.
-- Gérez une erreur si le dossier n’existe pas.
+        Write-Output "Fichier copié, renommé et supprimé avec succès."
+    } catch {
+        Write-Output "Erreur : $_"
+    } finally {
+        Write-Output "Nettoyage terminé."
+    }
+}
+
+# Exemple d'utilisation
+CopierRenommerSupprimer -Source "C:\Temp\source.txt" -Destination "C:\Temp\Backup" -NouveauNom "renommé.txt"
+```
 
 ---
 
-### **10. TP : Exécution Planifiée avec PowerShell**
+### **6. Fonction Réutilisable pour les Logs**
 
-#### **Énoncé :**
-Créez un script PowerShell qui planifie une tâche dans le Planificateur de tâches Windows pour :
+#### **Solution :**
+```powershell
+function GererLogs {
+    param (
+        [string]$FichierLog,
+        [string]$Action,
+        [string]$Message
+    )
+    try {
+        switch ($Action) {
+            "Ajouter" {
+                $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+                "$timestamp : $Message" | Add-Content -Path $FichierLog
+            }
+            "Lire" {
+                Get-Content -Path $FichierLog
+            }
+            "Nettoyer" {
+                $dateLimite = (Get-Date).AddDays(-7)
+                $contenu = Get-Content -Path $FichierLog | Where-Object { ($_ -match "^\d{4}-\d{2}-\d{2}") -and ([datetime]($_ -split " ")[0]) -gt $dateLimite }
+                $contenu | Set-Content -Path $FichierLog
+            }
+        }
+    } catch {
+        Write-Output "Erreur : $_"
+    }
+}
 
-1. Exécuter un script PowerShell spécifique à une heure donnée.
-2. Vérifier si la tâche a été créée avec succès.
-3. Supprimer la tâche planifiée après l’exécution.
-
-#### **Contraintes :**
-- Utilisez la cmdlet `Register-ScheduledTask` pour créer la tâche.
-- Gérez les erreurs si la tâche existe déjà.
+# Exemple d'utilisation
+GererLogs -FichierLog "C:\Temp\app.log" -Action "Ajouter" -Message "Log initial."
+GererLogs -FichierLog "C:\Temp\app.log" -Action "Lire"
+GererLogs -FichierLog "C:\Temp\app.log" -Action "Nettoyer"
+```
 
