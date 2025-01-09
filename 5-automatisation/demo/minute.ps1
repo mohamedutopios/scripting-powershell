@@ -5,7 +5,7 @@ $TaskName = "CreationFichierToutesLesMinutes"
 $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 1) -RepetitionDuration (New-TimeSpan -Days 31)
 
 # Définir l'action (exécution d'un script pour créer un fichier)
-$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Users\Administrateur\Documents\scripting-powershell\5-automatisation\demo\CreerFichier.ps1"
+$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Users\mohamed\Downloads\scripting-powershell\5-automatisation\demo\CreerFichier.ps1"
 
 # Enregistrer la tâche planifiée
 try {

@@ -1,4 +1,4 @@
-$DestinationFolder = "C:\Users\Administrateur\Documents\scripting-powershell\5-automatisation\demo\minutes"
+$DestinationFolder = "C:\Users\mohamed\Downloads\scripting-powershell\5-automatisation\demo\minutes"
 $LogFile = "C:\Temp\CreationLog.txt"
 
 try {
