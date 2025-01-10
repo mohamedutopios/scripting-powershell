@@ -13,4 +13,4 @@ function CreerUtilisateur {
     }
 }
 
-CreerUtilisateur -NomUtilisateur "JohnDoe" -MotDePasse "P@ssword123"
+
